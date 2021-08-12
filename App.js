@@ -1,128 +1,111 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
 
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, Button, ImageBackground } from 'react-native';
+import { Text, View, StyleSheet, Button, Image, TextInput, Alert } from 'react-native';
 
-export default class SegProject extends Component {
+export default class primeirornprojeto extends Component {
+constructor(props){
+  super(props);
+  this.state={texto1: 'Texto 1', texto2:'Texto 2'};
 
-  constructor(props) {
-    super(props);
-    this.state = { consumido: 0, status: 'Ruim', pct: 0 };
+  this.escrever = this.escrever.bind(this);
+}
 
-    this.addcopo = this.addcopo.bind(this);
-    this.atualizar = this.atualizar.bind(this);
-    this.zerardia = this.zerardia.bind(this);
-  }
+mudarvogais(texto){
+let novotexto = texto.toLowerCase();
+novotexto= novotexto.replace(/(a|e|o|u)/g, 'i');
+novotexto= novotexto.replace(/(á|à|â|ã)/g, 'i');
+novotexto= novotexto.replace(/(é|è|ê)/g, 'i');
+novotexto= novotexto.replace(/(ó|ò|õ|ô)/g, 'i');
+novotexto= novotexto.replace(/(ú|ù|û)/g, 'i');
+return novotexto
+}
 
-  atualizar() {
-    let s = this.state;
-    s.pct = Math.floor((s.consumido / 2000) * 100);
-    if (s.pct >= 100) {
-      s.status = "Bom";
-    }
-    else {
-      s.status = "Ruim";
-    }
-    this.setState(s);
-  }
-
-  addcopo() {
-    let s = this.state;
-    s.consumido += 200;
-    this.setState(s);
-    this.atualizar();
-
-  }
-
-  zerardia() {
-    let s = this.state;
-    s.consumido = 0;
-    this.setState(s);
-    this.atualizar();
-  }
+escrever(t){
+let s = this.state;
+s.texto1 = t;
+s.texto2 = this.mudarvogais(t);
+this.setState(s);
+}
 
   render() {
+
     return (
       <View style={styles.body}>
-        <ImageBackground source={require('./Imagens/fundo.png')} style={styles.bgimage}>
-          
-
-            <View style={styles.infoarea}>
-              <View style={styles.area}>
-                <Text style={styles.areatitulo}>Meta</Text>
-                <Text style={styles.areadado}>2000ml</Text>
-              </View>
-              <View style={styles.area}>
-                <Text style={styles.areatitulo}>Consumido</Text>
-                <Text style={styles.areadado}>{this.state.consumido}ml</Text>
-              </View>
-              <View style={styles.area}>
-                <Text style={styles.areatitulo}>Status</Text>
-                <Text style={styles.areadado}>{this.state.status}</Text>
-              </View>
-            </View>
-          
-            <View style={styles.pctarea}>
-              <Text style={styles.pcttext}>{this.state.pct}</Text>
-            </View>
-
-            <View style={styles.btnarea}>
-              <Button title="Beber 200ml" onPress={this.addcopo} />
-            </View>
-
-            <View style={styles.btnarea2}>
-              <Button title="Zerar" onPress={this.zerardia} />
-            </View>
-
-          
-        </ImageBackground>
+        <View>
+          <Text style={styles.titulo}>Criador de mimi</Text>
+        </View>
+        <View style={styles.inputarea}>
+          <TextInput style={styles.input} placeholder="Digite seu mimi" onChangeText={this.escrever}/>
+        </View>
+        <View style={styles.area}>
+          <Text style={[styles.texto, styles.texto1]}>{this.state.texto1.toUpperCase()}</Text>
+          <Image style={styles.guri} source={require('./Imagens/miko-hughes.jpg')} />
+          <Text style={[styles.texto, styles.texto2]}>{this.state.texto2.toUpperCase()}</Text>
+        </View>
       </View>
     );
   }
+
 }
 
 const styles = StyleSheet.create({
   body: {
-    flex: 1
-  },
-  bgimage: {
+    backgroundColor: '#999999',
+    paddingTop: 30,
     flex: 1,
-    width: null
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  infoarea: {
-    flex: 1,
-    flexDirection: 'row',
-    marginTop: 50
+  titulo:
+  {
+    fontSize: 40,
+    color: '#FFFFFF'
+  },
+  texto: {
+    fontSize: 25,
+    color: '#FFFFFF',
+    padding: 10,
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    height: 80
+  },
+  texto1: {
+    zIndex: 1
+  },
+  texto2: {
+    zIndex: 1,
+    marginTop: -70
+  },
+
+  inputarea: {
+    alignSelf: 'stretch'
+  },
+  input: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#999999',
+    backgroundColor: '#EEEEEE',
+    color: '#000000',
+    margin: 20,
+    padding: 10
+  },
+  guri: {
+    width: 300,
+    height: 300,
+    marginTop: -70
   },
   area: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  areatitulo: {
-    color: '#45b2fc',
-    fontSize: 20
-  },
-  areadado: {
-    color: '#2b4274',
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-  pctarea: {
-    //marginTop: 10,
-    alignItems: 'center'
-  },
-  pcttext:
-  {
-    fontSize: 70,
-    color: '#000000',
-    backgroundColor: 'transparent'
-  },
-  btnarea: {
-    marginTop: 120,
-    alignItems: 'center'
-  },
-  btnarea2: {
-    marginTop: 10,
-    marginBottom: 100,
-    alignItems: 'center'
+    width: 300,
+    height: 300,
+    marginTop: 10
   }
-});
+
+})
